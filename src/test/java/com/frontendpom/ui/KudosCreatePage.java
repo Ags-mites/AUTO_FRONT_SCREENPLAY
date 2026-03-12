@@ -2,7 +2,7 @@ package com.frontendpom.ui;
 
 import net.serenitybdd.screenplay.targets.Target;
 
-public class KudosPage {
+public class KudosCreatePage {
 
     public static final Target SLIDER_HOMEPAGE = Target.the("Slider homepage")
             .locatedBy("(//span[contains(normalize-space(.),'Desliza para conectar')]/ancestor::div[contains(@class,'cursor-pointer')][1]//*[contains(@class,'w-16') and contains(@class,'rounded-full') and contains(@class,'bg-brand')])[1]");
@@ -24,4 +24,5 @@ public class KudosPage {
 
     public static final Target TOAST_SUCCESS = Target.the("Toast éxito")
             .locatedBy("(//li[@data-sonner-toast and @data-type='success']//div[@data-title] | //*[contains(normalize-space(.),'Kudo enviado')])[1]");
+
 }

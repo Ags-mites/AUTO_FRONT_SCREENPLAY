@@ -4,7 +4,7 @@ import com.frontendpom.hooks.OpenBrowser;
 import com.frontendpom.questions.SuccessMessage;
 import com.frontendpom.questions.FormCleaned;
 import com.frontendpom.tasks.SlideRight;
-import com.frontendpom.ui.KudosPage;
+import com.frontendpom.ui.KudosCreatePage;
 import com.frontendpom.util.Config;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -27,64 +27,64 @@ import static org.hamcrest.Matchers.is;
 
 public class SendKudoStepDefinitions {
 
-    @Given("el usuario se encuentra en la pagina de envio de Kudos")
+    @Given("que el empleado se encuentra en la pantalla de \"Envío de Kudos\"")
     public void theUserIsOnKudoSendPage() {
         OnStage.theActorCalled(Config.ACTOR_NAME).attemptsTo(
             OpenBrowser.openUrl(Config.BASE_URL),
-            SlideRight.on(KudosPage.SLIDER_HOMEPAGE, 600),
-            WaitUntil.the(KudosPage.SELECT_REMITENTE, isVisible()).forNoMoreThan(20).seconds()
+            SlideRight.on(KudosCreatePage.SLIDER_HOMEPAGE, 600),
+            WaitUntil.the(KudosCreatePage.SELECT_REMITENTE, isVisible()).forNoMoreThan(20).seconds()
         );
         OnStage.theActorInTheSpotlight();
     }
 
-    @When("el usuario selecciona un remitente")
-    public void theUserSelectsSender() {
+    @When("el empleado selecciona como remitente a {string}")
+    public void theUserSelectsSender(String sender) {
         OnStage.theActorInTheSpotlight().attemptsTo(
-            SelectFromOptions.byVisibleText(Config.SENDER).from(KudosPage.SELECT_REMITENTE)
+            SelectFromOptions.byVisibleText(sender).from(KudosCreatePage.SELECT_REMITENTE)
         );
     }
 
-    @When("el usuario selecciona un destinatario diferente")
-    public void theUserSelectsDifferentReceiver() {
+    @When("busca y selecciona al destinatario {string}")
+    public void theUserSelectsDifferentReceiver(String receiver) {
         OnStage.theActorInTheSpotlight().attemptsTo(
-            SelectFromOptions.byVisibleText(Config.RECEIVER).from(KudosPage.SELECT_DESTINATARIO)
+            SelectFromOptions.byVisibleText(receiver).from(KudosCreatePage.SELECT_DESTINATARIO)
         );
     }
 
-    @When("el usuario selecciona una categoría")
-    public void theUserSelectsCategory() {
+    @When("elige la categoría de reconocimiento {string}")
+    public void theUserSelectsCategory(String category) {
         OnStage.theActorInTheSpotlight().attemptsTo(
-            SelectFromOptions.byVisibleText(Config.CATEGORY).from(KudosPage.SELECT_CATEGORIA)
+            SelectFromOptions.byVisibleText(category).from(KudosCreatePage.SELECT_CATEGORIA)
         );
     }
 
-    @When("el usuario escribe el {string}")
+    @When("escribe un mensaje de agradecimiento: {string}")
     public void theUserWritesTheKudo(String kudo) {
         OnStage.theActorInTheSpotlight().attemptsTo(
-            Enter.theValue(kudo).into(KudosPage.TEXTAREA_MENSAJE),
-            Hit.the(Keys.TAB).into(KudosPage.TEXTAREA_MENSAJE)
+            Enter.theValue(kudo).into(KudosCreatePage.TEXTAREA_MENSAJE),
+            Hit.the(Keys.TAB).into(KudosCreatePage.TEXTAREA_MENSAJE)
         );
         setTextareaValue(kudo);
     }
 
-    @When("el usuario arrastra el slider de confirmacion")
+    @When("desliza el control de confirmación hasta el final")
     public void theUserDragsConfirmationSlider() {
         OnStage.theActorInTheSpotlight().attemptsTo(
-            SlideRight.on(KudosPage.SLIDER_ENVIO, 420)
+            SlideRight.on(KudosCreatePage.SLIDER_ENVIO, 420)
         );
     }
 
-    @Then("el sistema muestra un mensaje de exito")
+    @Then("el sistema debe mostrar una notificación de envío exitoso")
     public void theSystemShowsSuccessMessage() {
         OnStage.theActorInTheSpotlight().attemptsTo(
-            WaitUntil.the(KudosPage.TOAST_SUCCESS, isVisible()).forNoMoreThan(15).seconds()
+            WaitUntil.the(KudosCreatePage.TOAST_SUCCESS, isVisible()).forNoMoreThan(15).seconds()
         );
         OnStage.theActorInTheSpotlight().should(
             seeThat(SuccessMessage.successMessage(), containsString("Kudo enviado"))
         );
     }
 
-    @And("el formulario se limpia automaticamente")
+    @And("los campos del formulario deben quedar vacíos para un nuevo registro")
     public void theFormIsCleanedAutomatically() {
         OnStage.theActorInTheSpotlight().should(
             seeThat(FormCleaned.formCleaned(), is(true))
@@ -92,7 +92,7 @@ public class SendKudoStepDefinitions {
     }
 
     private void setTextareaValue(String value) {
-        WebElement textarea = KudosPage.TEXTAREA_MENSAJE.resolveFor(OnStage.theActorInTheSpotlight());
+        WebElement textarea = KudosCreatePage.TEXTAREA_MENSAJE.resolveFor(OnStage.theActorInTheSpotlight());
         JavascriptExecutor js = (JavascriptExecutor) BrowseTheWeb.as(OnStage.theActorInTheSpotlight()).getDriver();
         js.executeScript(
             "const textarea = arguments[0];" +

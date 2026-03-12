@@ -1,6 +1,6 @@
 package com.frontendpom.questions;
 
-import com.frontendpom.ui.KudosPage;
+import com.frontendpom.ui.KudosCreatePage;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Question;
 
@@ -8,7 +8,7 @@ public class SuccessMessage implements Question<String> {
 
     @Override
     public String answeredBy(Actor actor) {
-        return KudosPage.TOAST_SUCCESS.resolveFor(actor).getText();
+        return KudosCreatePage.TOAST_SUCCESS.resolveFor(actor).getText();
     }
 
     public static SuccessMessage successMessage() {
