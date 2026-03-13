@@ -2,7 +2,7 @@ package com.frontendpom.ui;
 
 import net.serenitybdd.screenplay.targets.Target;
 
-public interface KudosListPage {
+public class KudosListPage {
     
     public static final Target LINK_EXPLORADOR = Target.the("Link Explorador Kudos")
             .locatedBy("//button[contains(normalize-space(.), 'Explorar Kudos')]");
