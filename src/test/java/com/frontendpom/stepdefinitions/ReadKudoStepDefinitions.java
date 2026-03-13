@@ -8,6 +8,7 @@ import com.frontendpom.tasks.FilterKudos;
 import com.frontendpom.tasks.PostKudo;
 import com.frontendpom.tasks.SearchRecipient;
 import com.frontendpom.ui.KudosListPage;
+import com.frontendpom.util.CategoryUtils;
 import com.frontendpom.util.Config;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
@@ -62,8 +63,7 @@ public class ReadKudoStepDefinitions {
 
     @When("el empleado filtra la lista por la categoría {string}")
     public void filterByCategory(String category) {
-        // Convertir a Title Case para el selector de UI (MASTERY -> Mastery)
-        String uiCategory = category.substring(0, 1).toUpperCase() + category.substring(1).toLowerCase();
+        String uiCategory = CategoryUtils.toTitleCase(category);
         OnStage.theActorInTheSpotlight().attemptsTo(
                 FilterKudos.byCategory(uiCategory)
         );

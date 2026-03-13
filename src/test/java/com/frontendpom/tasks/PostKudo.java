@@ -1,5 +1,6 @@
 package com.frontendpom.tasks;
 
+import com.frontendpom.util.CategoryUtils;
 import io.restassured.http.ContentType;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
@@ -30,12 +31,8 @@ public class PostKudo implements Task {
         String category = data.getOrDefault("category", data.get("categoria"));
         String message = data.getOrDefault("message", data.get("mensaje"));
 
-        // Convertir categoría a Title Case (INNOVATION -> Innovation)
-        if (category != null && !category.isEmpty()) {
-            category = category.substring(0, 1).toUpperCase() + category.substring(1).toLowerCase();
-        }
+        category = CategoryUtils.toTitleCase(category);
 
-        // La API espera "from" y "to", no "sender" y "receiver"
         apiBody.put("from", sender);
         apiBody.put("to", receiver);
         apiBody.put("category", category);
