@@ -54,7 +54,6 @@ public class ReadKudoStepDefinitions {
     @And("la respuesta del servicio es exitosa \\({int} Accepted\\)")
     public void serviceResponseIsSuccess(int statusCode) {
         OnStage.theActorInTheSpotlight().should(
-                // Aceptamos 400 también en caso de duplicados para permitir que la prueba continúe a la validación UI
                 seeThatResponse("El código de respuesta debe ser " + statusCode + " o 400 (duplicado)",
                         response -> response.statusCode(anyOf(is(statusCode), is(200), is(201), is(400))))
         );

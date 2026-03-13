@@ -5,7 +5,6 @@ Feature: Exploración y Visualización de Kudos (Read Model)
     And el usuario accede a la URL del "Explorar Kudos"
 
   Scenario Outline: Visualización de Kudos inyectados mediante integración API
-    # Carga de datos
     Given que se realiza una petición POST al endpoint de Kudos con:
       | from     | <correo_remitente>   |
       | to       | <correo_destinatario>|
@@ -13,7 +12,6 @@ Feature: Exploración y Visualización de Kudos (Read Model)
       | message  | <mensaje>           |
     And la respuesta del servicio es exitosa (202 Accepted)
 
-    # Validacion frontend
     When el empleado filtra la lista por la categoría "<categoria>"
     And realiza la búsqueda del destinatario "<correo_destinatario>"
     Then el sistema debe mostrar el registro en el Explorador con el mensaje "<mensaje>"
