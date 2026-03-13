@@ -11,14 +11,11 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.serenitybdd.screenplay.actors.OnStage;
-import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
 import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.actions.Hit;
 import net.serenitybdd.screenplay.actions.SelectFromOptions;
 import net.serenitybdd.screenplay.waits.WaitUntil;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
 
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isVisible;
@@ -64,7 +61,6 @@ public class SendKudoStepDefinitions {
             Enter.theValue(kudo).into(KudosCreatePage.TEXTAREA_MENSAJE),
             Hit.the(Keys.TAB).into(KudosCreatePage.TEXTAREA_MENSAJE)
         );
-        setTextareaValue(kudo);
     }
 
     @When("desliza el control de confirmación hasta el final")
@@ -88,21 +84,6 @@ public class SendKudoStepDefinitions {
     public void theFormIsCleanedAutomatically() {
         OnStage.theActorInTheSpotlight().should(
             seeThat(FormCleaned.formCleaned(), is(true))
-        );
-    }
-
-    private void setTextareaValue(String value) {
-        WebElement textarea = KudosCreatePage.TEXTAREA_MENSAJE.resolveFor(OnStage.theActorInTheSpotlight());
-        JavascriptExecutor js = (JavascriptExecutor) BrowseTheWeb.as(OnStage.theActorInTheSpotlight()).getDriver();
-        js.executeScript(
-            "const textarea = arguments[0];" +
-            "const value = arguments[1];" +
-            "const setter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value').set;" +
-            "setter.call(textarea, value);" +
-            "textarea.dispatchEvent(new Event('input', { bubbles: true }));" +
-            "textarea.dispatchEvent(new Event('change', { bubbles: true }));",
-                textarea,
-                value
         );
     }
 

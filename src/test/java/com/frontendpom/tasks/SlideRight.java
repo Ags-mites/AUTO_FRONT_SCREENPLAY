@@ -5,9 +5,13 @@ import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.Tasks;
 import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
 import net.serenitybdd.screenplay.targets.Target;
+import net.serenitybdd.screenplay.waits.WaitUntil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.TimeoutException;
+
+import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isVisible;
 
 public class SlideRight implements Task {
 
@@ -21,17 +25,25 @@ public class SlideRight implements Task {
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        WebElement draggable = target.resolveFor(actor);
-        WebElement track = draggable.findElement(By.xpath("ancestor::div[contains(@class,'cursor-pointer')][1]"));
+        try {
+            actor.attemptsTo(WaitUntil.the(target, isVisible()).forNoMoreThan(10).seconds());
+            
+            WebElement draggable = target.resolveFor(actor);
+            WebElement track = draggable.findElement(By.xpath("ancestor::div[contains(@class,'cursor-pointer')][1]"));
 
-        int dynamicDistance = Math.max(0, track.getSize().getWidth() - draggable.getSize().getWidth() - 4);
-        int distanceToMove = Math.max(offset, dynamicDistance);
+            int dynamicDistance = Math.max(0, track.getSize().getWidth() - draggable.getSize().getWidth() - 4);
+            int distanceToMove = Math.max(offset, dynamicDistance);
 
-        new Actions(BrowseTheWeb.as(actor).getDriver())
-                .clickAndHold(draggable)
-            .moveByOffset(distanceToMove, 0)
-                .release()
-                .perform();
+            new Actions(BrowseTheWeb.as(actor).getDriver())
+                    .clickAndHold(draggable)
+                .moveByOffset(distanceToMove, 0)
+                    .release()
+                    .perform();
+        } catch (TimeoutException e) {
+            throw new RuntimeException("El elemento deslizable no fue encontrado en el tiempo esperado: " + target, e);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al realizar el deslizamiento: " + e.getMessage(), e);
+        }
     }
 
     public static Task on(Target target, int offset) {
