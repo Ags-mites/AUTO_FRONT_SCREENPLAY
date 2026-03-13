@@ -32,7 +32,7 @@ public class ReadKudoStepDefinitions {
     @Given("que el sistema SofkianOS se encuentra operativo")
     public void systemIsOperational() {
         OnStage.theActorCalled(Config.ACTOR_NAME)
-                .whoCan(CallAnApi.at("http://localhost:8082/api/v1"));
+                .whoCan(CallAnApi.at(Config.API_BASE_URL));
     }
 
     @And("el usuario accede a la URL del \"Explorar Kudos\"")

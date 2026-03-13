@@ -31,7 +31,6 @@ public class SendKudoStepDefinitions {
             SlideRight.on(KudosCreatePage.SLIDER_HOMEPAGE, 600),
             WaitUntil.the(KudosCreatePage.SELECT_REMITENTE, isVisible()).forNoMoreThan(20).seconds()
         );
-        OnStage.theActorInTheSpotlight();
     }
 
     @When("el empleado selecciona como remitente a {string}")

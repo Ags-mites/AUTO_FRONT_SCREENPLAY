@@ -29,7 +29,8 @@ public class SlideRight implements Task {
             actor.attemptsTo(WaitUntil.the(target, isVisible()).forNoMoreThan(10).seconds());
             
             WebElement draggable = target.resolveFor(actor);
-            WebElement track = draggable.findElement(By.xpath("ancestor::div[contains(@class,'cursor-pointer')][1]"));
+            String sliderText = draggable.getText();
+            WebElement track = draggable.findElement(By.xpath("ancestor::div[.//span[contains(normalize-space(.),'Desliza')]][1]"));
 
             int dynamicDistance = Math.max(0, track.getSize().getWidth() - draggable.getSize().getWidth() - 4);
             int distanceToMove = Math.max(offset, dynamicDistance);
